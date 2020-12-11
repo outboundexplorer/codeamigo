@@ -13,6 +13,8 @@ import { LessonResolver } from "./resolvers/lesson";
 import { UserResolver } from "./resolvers/user";
 import { Lesson } from "./entities/Lesson";
 import { User } from "./entities/User";
+import { Step } from './entities/Step';
+import { StepResolver } from './resolvers/step';
 
 const main = async () => {
   await createConnection({
@@ -22,7 +24,7 @@ const main = async () => {
     password: 'postgres',
     logging: true,
     synchronize: true,
-    entities: [User, Lesson]
+    entities: [User, Lesson, Step]
   })
 
 
@@ -59,7 +61,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [LessonResolver, UserResolver],
+      resolvers: [LessonResolver, UserResolver, StepResolver],
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res, redis }),
