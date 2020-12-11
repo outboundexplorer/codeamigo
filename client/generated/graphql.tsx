@@ -18,10 +18,17 @@ export type Query = {
   lessons: Array<Lesson>;
   lesson?: Maybe<Lesson>;
   me?: Maybe<User>;
+  steps: Array<Step>;
+  step?: Maybe<Step>;
 };
 
 
 export type QueryLessonArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryStepArgs = {
   id: Scalars['Int'];
 };
 
@@ -45,6 +52,16 @@ export type User = {
   email: Scalars['String'];
 };
 
+export type Step = {
+  __typename?: 'Step';
+  id: Scalars['Float'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  title: Scalars['String'];
+  description: Scalars['String'];
+  lesson: Lesson;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createLesson: Lesson;
@@ -54,6 +71,9 @@ export type Mutation = {
   login: UserResponse;
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
+  createStep: Step;
+  updateStep?: Maybe<Step>;
+  deleteStep: Scalars['Boolean'];
 };
 
 
@@ -93,6 +113,22 @@ export type MutationChangePasswordArgs = {
   token: Scalars['String'];
 };
 
+
+export type MutationCreateStepArgs = {
+  options: StepInput;
+};
+
+
+export type MutationUpdateStepArgs = {
+  title: Scalars['String'];
+  id: Scalars['Float'];
+};
+
+
+export type MutationDeleteStepArgs = {
+  id: Scalars['Float'];
+};
+
 export type LessonInput = {
   title: Scalars['String'];
   description: Scalars['String'];
@@ -119,6 +155,12 @@ export type RegisterInput = {
 export type LoginInput = {
   usernameOrEmail: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type StepInput = {
+  lessonId: Scalars['Float'];
+  title: Scalars['String'];
+  description: Scalars['String'];
 };
 
 export type RegularErrorFragment = (
