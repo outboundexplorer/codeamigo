@@ -5,16 +5,14 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Step } from "./Step";
-import { User } from "./User";
+import { Lesson } from "./Lesson";
 
 @ObjectType()
 @Entity()
-export class Lesson extends BaseEntity {
+export class Step extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
@@ -35,15 +33,8 @@ export class Lesson extends BaseEntity {
   @Column()
   description!: string;
 
-  @Field()
-  @Column({ type: 'int', default: 0 })
-  likes!: number
+  @ManyToOne(() => Lesson, (lesson) => lesson.steps)
+  lesson: Lesson;
 
-  @Field(() => User)
-  @ManyToOne(() => User, (user) => user.lessons)
-  owner: User;
-
-  @OneToMany(() => Step, (step) => step.lesson)
-  @Field(() => [Step], { defaultValue: [] })
-  steps!: Step[];
+  // checkpoints
 }
