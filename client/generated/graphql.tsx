@@ -20,6 +20,8 @@ export type Query = {
   me?: Maybe<User>;
   steps: Array<Step>;
   step?: Maybe<Step>;
+  checkpoints: Array<Checkpoint>;
+  checkpoint?: Maybe<Checkpoint>;
 };
 
 
@@ -32,6 +34,11 @@ export type QueryStepArgs = {
   id: Scalars['Int'];
 };
 
+
+export type QueryCheckpointArgs = {
+  id: Scalars['Int'];
+};
+
 export type Lesson = {
   __typename?: 'Lesson';
   id: Scalars['Float'];
@@ -41,6 +48,7 @@ export type Lesson = {
   description: Scalars['String'];
   likes: Scalars['Float'];
   owner: User;
+  steps?: Maybe<Array<Step>>;
 };
 
 export type User = {
@@ -60,6 +68,18 @@ export type Step = {
   updatedAt: Scalars['String'];
   title: Scalars['String'];
   description: Scalars['String'];
+  checkpoints?: Maybe<Array<Checkpoint>>;
+};
+
+export type Checkpoint = {
+  __typename?: 'Checkpoint';
+  id: Scalars['Float'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  description: Scalars['String'];
+  initialCode: Scalars['String'];
+  userCode: Scalars['String'];
+  test: Scalars['String'];
 };
 
 export type Mutation = {
@@ -74,6 +94,9 @@ export type Mutation = {
   createStep: Step;
   updateStep?: Maybe<Step>;
   deleteStep: Scalars['Boolean'];
+  createCheckpoint: Checkpoint;
+  updateCheckpoint?: Maybe<Checkpoint>;
+  deleteCheckpoint: Scalars['Boolean'];
 };
 
 
@@ -129,6 +152,22 @@ export type MutationDeleteStepArgs = {
   id: Scalars['Float'];
 };
 
+
+export type MutationCreateCheckpointArgs = {
+  options: CheckpointInput;
+};
+
+
+export type MutationUpdateCheckpointArgs = {
+  options: CheckpointInput;
+  id: Scalars['Float'];
+};
+
+
+export type MutationDeleteCheckpointArgs = {
+  id: Scalars['Float'];
+};
+
 export type LessonInput = {
   title: Scalars['String'];
   description: Scalars['String'];
@@ -161,6 +200,14 @@ export type StepInput = {
   lessonId: Scalars['Float'];
   title: Scalars['String'];
   description: Scalars['String'];
+};
+
+export type CheckpointInput = {
+  stepId: Scalars['Float'];
+  description: Scalars['String'];
+  initialCode: Scalars['String'];
+  userCode: Scalars['String'];
+  test: Scalars['String'];
 };
 
 export type RegularErrorFragment = (

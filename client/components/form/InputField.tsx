@@ -16,6 +16,7 @@ const InputField: React.FC<Props & InputFieldProps> = (props) => {
       </label>
       <input
         {...field}
+        {...props}
         type={props.type}
         name={field.name}
         id={field.name}
