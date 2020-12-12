@@ -50,6 +50,7 @@ export type User = {
   updatedAt: Scalars['String'];
   username: Scalars['String'];
   email: Scalars['String'];
+  lessons: Array<Lesson>;
 };
 
 export type Step = {
@@ -59,7 +60,6 @@ export type Step = {
   updatedAt: Scalars['String'];
   title: Scalars['String'];
   description: Scalars['String'];
-  lesson: Lesson;
 };
 
 export type Mutation = {
@@ -267,7 +267,7 @@ export type LessonsQuery = (
     & Pick<Lesson, 'createdAt' | 'description' | 'id' | 'title' | 'updatedAt'>
     & { owner: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
+      & Pick<User, 'username'>
     ) }
   )> }
 );
@@ -280,6 +280,21 @@ export type MeQuery = (
   & { me?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
+    & { lessons: Array<(
+      { __typename?: 'Lesson' }
+      & Pick<Lesson, 'id'>
+    )> }
+  )> }
+);
+
+export type StepsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type StepsQuery = (
+  { __typename?: 'Query' }
+  & { steps: Array<(
+    { __typename?: 'Step' }
+    & Pick<Step, 'title' | 'description'>
   )> }
 );
 
@@ -489,7 +504,6 @@ export const LessonsDocument = gql`
     title
     updatedAt
     owner {
-      id
       username
     }
   }
@@ -525,6 +539,9 @@ export const MeDocument = gql`
   me {
     id
     username
+    lessons {
+      id
+    }
   }
 }
     `;
@@ -553,3 +570,36 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const StepsDocument = gql`
+    query Steps {
+  steps {
+    title
+    description
+  }
+}
+    `;
+
+/**
+ * __useStepsQuery__
+ *
+ * To run a query within a React component, call `useStepsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStepsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStepsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useStepsQuery(baseOptions?: Apollo.QueryHookOptions<StepsQuery, StepsQueryVariables>) {
+        return Apollo.useQuery<StepsQuery, StepsQueryVariables>(StepsDocument, baseOptions);
+      }
+export function useStepsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<StepsQuery, StepsQueryVariables>) {
+          return Apollo.useLazyQuery<StepsQuery, StepsQueryVariables>(StepsDocument, baseOptions);
+        }
+export type StepsQueryHookResult = ReturnType<typeof useStepsQuery>;
+export type StepsLazyQueryHookResult = ReturnType<typeof useStepsLazyQuery>;
+export type StepsQueryResult = Apollo.QueryResult<StepsQuery, StepsQueryVariables>;

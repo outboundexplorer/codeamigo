@@ -44,5 +44,6 @@ export class Lesson extends BaseEntity {
   owner: User;
 
   @OneToMany(() => Step, (step) => step.lesson)
+  @Field(() => [Step], { defaultValue: [] })
   steps!: Step[];
 }

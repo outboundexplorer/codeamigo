@@ -33,7 +33,6 @@ export class Step extends BaseEntity {
   @Column()
   description!: string;
 
-  @Field(() => Lesson)
   @ManyToOne(() => Lesson, (lesson) => lesson.steps)
   lesson: Lesson;
 
